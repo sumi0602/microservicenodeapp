@@ -50,7 +50,7 @@ app.post("/tasks", async (req, res) => {
     await task.save();
 
     if (rabbitConnected && channel) {
-      const message = { taskId: task._id, title, userId };
+      const message = { taskId: task._id.toString(), title, userId };
       channel.sendToQueue("task_created", Buffer.from(JSON.stringify(message)));
       console.log("📤 Message sent to RabbitMQ queue");
     } else {
